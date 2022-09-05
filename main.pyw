@@ -1,10 +1,14 @@
 import time
 import random
 import pygame
-import pyttsx3
-import threading
 
-engine = pyttsx3.init()
+
+
+from win32api import GetSystemMetrics
+width = GetSystemMetrics(0)
+height = GetSystemMetrics(1)
+
+
 
 pygame.init()
 
@@ -21,8 +25,6 @@ BLACK = (0,0,0)
 
 colors = [WHITE, WHITE_RED,GREEN, RED, ORANGE, BLUE_DARK, BLUE_LIGHT]
 
-width = 1920
-height = 1080
 
 screen = pygame.display.set_mode((width, height))
 
@@ -99,16 +101,6 @@ def Pause():
         pause = True
 p = Player()
 init = time.time()
-def speak():
-    global init
-    current = int(time.time()-init)
-    if current % 2 == 0:
-        engine.say(f"speed is: {p.speed}")
-        print("speaked")
-        try:
-            engine.runAndWait()
-        except:
-            pass
 
 
 running = True
@@ -116,15 +108,12 @@ running = True
 game_font = pygame.font.SysFont("Ubuntu", 50)
 big_font = pygame.font.SysFont("Ubuntu", 255)
 target = 50000
-engine.say("Ready")
-engine.runAndWait()
+
+
 
 while True:
     pos = 0
     while running:
-        speaker = threading.Thread(target=speak)
-        speaker.daemon = True
-        speaker.start()
         screen.fill(BLACK)
         if not pause:
             speed = game_font.render(F"speed: {p.speed}", False, WHITE_RED)
